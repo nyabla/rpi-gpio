@@ -28,3 +28,8 @@ detection.
 
 Functions will be documented when some sort of stability is reached.
 
+## Attributions and Acknowledgements
+
+* `?ior` and `?errno-throw` in `c-imports.fs` are lifted from mmap.fs, authored by Bernd Paysan
+  and Anton Ertl, part of Gforth.
+
