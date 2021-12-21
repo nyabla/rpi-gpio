@@ -75,6 +75,13 @@ include c-imports.fs
   pin 10 / cells gpio-addr + FSEL_OFFSET + \ addr
   @ swap rshift 7 and ;
 
+\ handy functions for interactive mode for mode
+: gpio-output { pin -- }
+  pin OUT gpio-set-mode ;
+
+: gpio-input { pin -- }
+  pin IN gpio-set-mode ;
+
 : gpio-write { pin out -- }
   out
   IF \ addr if HIGH
@@ -85,6 +92,13 @@ include c-imports.fs
   pin 32 mod \ shift
   1 swap lshift
   swap ! ;
+
+\ handy functions for interactive mode for io
+: gpio-on { pin -- }
+  pin HIGH gpio-write ;
+
+: gpio-off { pin -- }
+  pin LOW gpio-write ;
 
 : gpio-read { pin -- reading }
   pin 32 / cells gpio-addr + PINLEVEL_OFFSET + \ addr
