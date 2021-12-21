@@ -16,9 +16,15 @@
 \ You should have received a copy of the GNU General Public License
 \ along with this program. If not, see http://www.gnu.org/licenses/.
 
-\ Direction Options
-0 Constant IN
-1 Constant OUT
+\ Mode Options
+%000 Constant IN
+%001 Constant OUT
+%100 Constant ALT0
+%101 Constant ALT1
+%110 Constant ALT2
+%111 Constant ALT3
+%011 Constant ALT4
+%010 Constant ALT5
 
 \ Value Options
 0 Constant LOW
@@ -54,17 +60,17 @@ include c-imports.fs
 : gpio-bye ( -- )
   gpio-addr &180 munmap ?ior ;
 
-: gpio-set-mode { pin direction -- }
+: gpio-set-mode { pin mode -- }
   pin 10 / cells gpio-addr + FSEL_OFFSET + \ addr
   dup
   pin 10 mod 3 * \ shift
   dup
   rot
   @ swap 7 swap lshift invert and \ *addr & (7 << shift)
-  swap direction swap lshift or \ _ | (direction << shift)
+  swap mode swap lshift or \ _ | (mode << shift)
   swap ! ;
 
-: gpio-get-mode { pin -- direction }
+: gpio-get-mode { pin -- mode }
   pin 10 mod 3 * \ shift
   pin 10 / cells gpio-addr + FSEL_OFFSET + \ addr
   @ swap rshift 7 and ;
