@@ -111,4 +111,15 @@ include c-imports.fs
     LOW
   THEN ;
 
+\ gpio events
+: gpio-event? { pin -- detected }
+  1 pin 32 mod lshift \ mask
+  pin 32 / cells gpio-addr + EVENT_DETECT_OFFSET + \ addr
+  @ and
+  IF
+    true
+  ELSE
+    false
+  THEN ;
+
 gpio-init
