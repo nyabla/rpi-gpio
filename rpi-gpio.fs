@@ -52,7 +52,7 @@ include c-imports.fs
   s" /dev/gpiomem" r/w bin open-file throw dup
   fileno dup ?ior
 
-  0 swap &180 swap PROT_RW swap MAP_SHARED swap 0 mmap
+  ( fd ) 0 0 &180 PROT_RW MAP_SHARED 2rot mmap
   dup ?ior
   TO gpio-addr
   close-file throw ;
