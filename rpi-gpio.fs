@@ -101,9 +101,8 @@ include c-imports.fs
   pin LOW gpio-write ;
 
 : gpio-read { pin -- reading }
-  pin 32 / cells gpio-addr + PINLEVEL_OFFSET + \ addr
   1 pin 32 mod lshift \ mask
-  swap
+  pin 32 / cells gpio-addr + PINLEVEL_OFFSET + \ addr
   @ and
   IF
     HIGH
