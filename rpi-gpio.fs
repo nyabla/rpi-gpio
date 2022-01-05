@@ -61,7 +61,7 @@ include c-imports.fs
   gpio-addr &180 munmap ?ior ;
 
 : gpio-set-mode { pin mode -- }
-  pin 10 / cells gpio-addr + FSEL_OFFSET + \ addr
+  pin 10 / /l * gpio-addr + FSEL_OFFSET + \ addr
   dup
   pin 10 mod 3 * \ shift
   dup
@@ -72,8 +72,8 @@ include c-imports.fs
 
 : gpio-get-mode { pin -- mode }
   pin 10 mod 3 * \ shift
-  pin 10 / cells gpio-addr + FSEL_OFFSET + \ addr
-  @ swap rshift 7 and ;
+  pin 10 / /l * gpio-addr + FSEL_OFFSET + \ addr
+  @ swap rshift 8 and ;
 
 \ handy functions for interactive mode for mode
 : gpio-output { pin -- }
@@ -85,9 +85,9 @@ include c-imports.fs
 : gpio-write { pin out -- }
   out
   IF \ addr if HIGH
-    pin 32 / cells gpio-addr + SET_OFFSET +
+    pin 32 / /l * gpio-addr + SET_OFFSET +
   ELSE \ addr if LOW
-    pin 32 / cells gpio-addr + CLR_OFFSET +
+    pin 32 / /l * gpio-addr + CLR_OFFSET +
   THEN
   pin 32 mod \ shift
   1 swap lshift
@@ -102,7 +102,7 @@ include c-imports.fs
 
 : gpio-read { pin -- reading }
   1 pin 32 mod lshift \ mask
-  pin 32 / cells gpio-addr + PINLEVEL_OFFSET + \ addr
+  pin 32 / /l * gpio-addr + PINLEVEL_OFFSET + \ addr
   @ and
   IF
     HIGH
@@ -113,7 +113,7 @@ include c-imports.fs
 \ gpio events
 : gpio-event? { pin -- detected }
   1 pin 32 mod lshift \ mask
-  pin 32 / cells gpio-addr + EVENT_DETECT_OFFSET + \ addr
+  pin 32 / /l * gpio-addr + EVENT_DETECT_OFFSET + \ addr
   @ and
   IF
     true
