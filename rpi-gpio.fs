@@ -73,7 +73,7 @@ include c-imports.fs
 : gpio-get-mode { pin -- mode }
   pin 10 mod 3 * \ shift
   pin 10 / /l * gpio-addr + FSEL_OFFSET + \ addr
-  @ swap rshift 8 and ;
+  @ swap rshift 7 and ;
 
 \ handy functions for interactive mode for mode
 : gpio-output { pin -- }
